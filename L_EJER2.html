@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Tarea No 1</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+    />
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+    <style>
+      #map {
+        width: 100%;
+        height: 600px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      var map = L.map("map", {
+        center: [1.618289, -75.60544],
+        zoom: 14,
+        scrollWheelZoom: true,
+      });
+
+      // Capa base de OpenStreetMap
+      var osmLayer = L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+          maxZoom: 18,
+          attribution:
+            '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+        }
+      ).addTo(map);
+
+      var universidadMarker = L.marker(
+        [1.619776, -75.602457],
+        {
+          title: "Universidad de la Amazonía",
+        }
+      )
+        .addTo(map)
+        .bindPopup("Universidad de la Amazonia")
+        .bindTooltip("Universidad de la Amazonía", { permanent: true });
+
+      universidadMarker.on("click", function (e) {
+        map.flyTo(e.target.getLatLng(), 17);
+      });
+
+      var alcaldiaMarker = L.marker([1.6151631418848975, -75.61384198311777], {
+        title: "Alcaldia de Florencia - Caquetá",
+      })
+        .addTo(map)
+        .bindPopup("Alcaldia de Florencia - Caquetá")
+        .bindTooltip("Alcaldia de Florencia - Caquetá", { permanent: true });
+
+      alcaldiaMarker.on("click", function (e) {
+        map.flyTo(e.target.getLatLng(), 17);
+      });
+
+      var alcaldiaCircle = L.circle([1.6151631418848975, -75.61384198311777], {
+        radius: 500,
+        color: "red",
+        fillColor: "#f03",
+        fillOpacity: 0.5,
+      }).addTo(map);
+
+      var plazaSantander = L.polygon([
+        [1.615188, -75.613705],
+        [1.614578, -75.613501],
+        [1.614793, -75.612814],
+        [1.615386, -75.613011],
+      ])
+        .addTo(map)
+        .bindPopup("Plaza Santander")
+        .bindTooltip("Plaza Santander", { permanent: true });
+
+      plazaSantander.on("click", function (e) {
+        map.flyTo(e.target.getBounds().getCenter(), 17);
+      });
+
+      var micasaMarker = L.marker([1.619679, -75.601159], {
+        title: "Mi casa",
+      })
+        .addTo(map)
+        .bindTooltip("Mi casa", { permanent: true });
+
+      micasaMarker.on("click", function (e) {
+        map.flyTo(e.target.getLatLng(), 17);
+      });
+
+      var miCasa = new L.LatLng(1.619679, -75.601159);
+      var puntoa = new L.LatLng(1.619685, -75.601373);
+      var puntob = new L.LatLng(1.619620, -75.601625);
+      var puntoc = new L.LatLng(1.619727, -75.601792);
+      var puntod = new L.LatLng(1.619776, -75.602044);
+      var puntoe = new L.LatLng(1.619776, -75.602296);
+      var universidad = new L.LatLng(1.619776, -75.602457);
+      var lineaHastaUni = L.polyline([miCasa, puntoa, puntob, puntoc, puntod, puntoe, universidad], {
+        color: "blue",
+        weight: 4,
+        opacity: 0.5,
+        smoothFactor: 1,
+      })
+        .addTo(map)
+        .openTooltip();
+
+      // Control de capas
+      var baseMaps = {
+        OpenStreetMap: osmLayer,
+      };
+
+      L.control.layers(baseMaps).addTo(map);
+      L.control.scale().addTo(map);
+    </script>
+  </body>
+</html>
